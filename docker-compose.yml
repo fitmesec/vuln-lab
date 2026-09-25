@@ -1,0 +1,42 @@
+# Учебный стенд уязвимых веб-приложений.
+# ВНИМАНИЕ: приложения намеренно уязвимы.
+# Доступны только с этого компьютера (127.0.0.1).
+
+services:
+  juice-shop:
+    image: bkimminich/juice-shop
+    ports:
+      - "127.0.0.1:3000:3000"
+    networks:
+      - juice
+
+  dvwa:
+    image: ghcr.io/digininja/dvwa:latest
+    environment:
+      - DB_SERVER=db
+      - DEFAULT_SECURITY_LEVEL=low
+    depends_on:
+      - db
+    ports:
+      - "127.0.0.1:4280:80"
+    networks:
+      - dvwa
+
+  db:
+    image: mariadb:10
+    environment:
+      - MYSQL_ROOT_PASSWORD=dvwa
+      - MYSQL_DATABASE=dvwa
+      - MYSQL_USER=dvwa
+      - MYSQL_PASSWORD=p@ssw0rd
+    volumes:
+      - dvwa-db:/var/lib/mysql
+    networks:
+      - dvwa
+
+networks:
+  juice:
+  dvwa:
+
+volumes:
+  dvwa-db:
