@@ -3,7 +3,8 @@ env:
   - excludePaths: []
     name: baseline
     urls:
-    - http://juice-shop:3000
+    - http://dvwa/vulnerabilities/sqli/?id=1&Submit=Submit
+    - http://dvwa/
   parameters:
     failOnError: true
     progressToStdout: false
@@ -14,12 +15,8 @@ jobs:
   type: passiveScan-config
 - parameters:
     maxDuration: 1
-    url: http://juice-shop:3000
+    url: http://dvwa/
   type: spider
-- parameters:
-    maxDuration: 1
-    url: http://juice-shop:3000
-  type: spiderClient
 - parameters:
     maxDuration: 0
   type: passiveScan-wait
@@ -31,14 +28,14 @@ jobs:
 - parameters:
     reportDescription: ''
     reportDir: /zap/wrk/
-    reportFile: juice-baseline.html
+    reportFile: dvwa-active.html
     reportTitle: ZAP Scanning Report
     template: traditional-html
   type: report
 - parameters:
     reportDescription: ''
     reportDir: /zap/wrk/
-    reportFile: juice-baseline.json
+    reportFile: dvwa-active.json
     reportTitle: ZAP Scanning Report
     template: traditional-json
   type: report
