@@ -25,10 +25,18 @@ An attacker can intercept and modify this parameter, prepending an approved URL 
 > **Note on Browser Behavior:** The final destination depends on how the victim's browser parses a URL containing `@` (everything before `@` is treated as basic auth user-info, routing to the host `example.com`). The core vulnerability, however, is server-side: the application generates an unsafe `Location` header.
 
 ## Proof of Concept
-See `reports/screenshots/` for visual verification:
-* `01-blocked-406.png` — Direct redirect to `example.com` is rejected (406).
-* `02-request-response.png` — Crafted payload returns `302` with a `Location` pointing to the external domain.
-* `03-browser-behavior.png` — Browser handling of the `@` character in the URL.
+
+**1. Прямой редирект на внешний домен заблокирован (`406`):**
+
+![Direct redirect blocked with 406](reports/screenshots/01-blocked-406.png)
+
+**2. Обход через `@`: сервер возвращает `302` с `Location` на внешний домен:**
+
+![Bypass returns 302 with external Location](reports/screenshots/02-request-response.png)
+
+**3. Обработка `@` в URL на стороне браузера:**
+
+![Browser handling of the @ character](reports/screenshots/03-browser-behavior.png)
 
 ## Impact
 This vulnerability can be heavily exploited in phishing campaigns. Attackers can craft malicious links that appear to belong to the trusted `localhost:3000` domain. When users click the link, they are redirected to a malicious site designed to steal credentials or distribute malware, leveraging the trust of the original application.
